@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import fetchImg from "../services/PixabayApi";
 
 import css from "./App.module.css";
@@ -18,11 +18,12 @@ function App() {
     const [showModal, setShowModal] = useState(false);
     const [largeImageURL, setLargeImageURL] = useState("");
 
-    const onSubmit = (queryInput) => {
-        if (queryInput !== query) {
+    const onSubmit = () => {
+        if (query) {
+            const firstPage = 1;
             setImages([]);
-            setPage(1);
-            setQuery(queryInput);
+            setPage(firstPage);
+            fetchQuery(firstPage);
         }
     };
 
@@ -41,27 +42,22 @@ function App() {
         onSubmit(query);
     };
 
-    useEffect(() => {
-        if (!query) return;
-
-        const fetchQuery = async (valueQuery) => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await fetchImg(valueQuery, page);
-                setImages((prevState) => [...prevState, ...response]);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchQuery(query);
-    }, [page, query]);
+    const fetchQuery = async (page) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const response = await fetchImg(query, page);
+            setImages((prevState) => [...prevState, ...response]);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleLoadMore = () => {
         setPage(page + 1);
+        fetchQuery(page + 1);
     };
 
     const onShowModal = (url) => {
@@ -82,7 +78,7 @@ function App() {
                 handleInputChange={handleInputChange}
                 query={query}
             />
-            <ImageGallery images={images} onShow={onShowModal} />
+            <ImageGallery images={images} onShowModal={onShowModal} />
             {images.length > 0 && !isLoading ? (
                 <Button onClick={handleLoadMore} />
             ) : (
@@ -90,7 +86,7 @@ function App() {
             )}
             {isLoading && <Loader />}
             {showModal && (
-                <Modal onClose={onCloseModal} image={largeImageURL} />
+                <Modal onCloseModal={onCloseModal} image={largeImageURL} />
             )}
         </div>
     );
