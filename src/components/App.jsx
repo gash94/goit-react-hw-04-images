@@ -11,7 +11,6 @@ import Button from "./Button/Button";
 
 function App() {
     const [query, setQuery] = useState("");
-    const [inputValue, setInputValue] = useState("");
     const [page, setPage] = useState(1);
     const [images, setImages] = useState([]);
     const [error, setError] = useState(null);
@@ -28,18 +27,18 @@ function App() {
     };
 
     const handleInputChange = (e) => {
-        setInputValue(e.target.value.toLowerCase());
+        setQuery(e.target.value.toLowerCase());
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (inputValue.trim() === "") {
+        if (query.trim() === "") {
             alert.error("Enter your search query");
             return;
         }
 
-        onSubmit(inputValue);
+        onSubmit(query);
     };
 
     useEffect(() => {
@@ -81,7 +80,7 @@ function App() {
             <Searchbar
                 handleSubmit={handleSubmit}
                 handleInputChange={handleInputChange}
-                inputValue={inputValue}
+                query={query}
             />
             <ImageGallery images={images} onShow={onShowModal} />
             {images.length > 0 && !isLoading ? (

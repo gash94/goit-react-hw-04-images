@@ -6,7 +6,7 @@ import css from "./Searchbar.module.css";
 const Searchbar = function Searchbar({
     handleSubmit,
     handleInputChange,
-    inputValue,
+    query,
 }) {
     return (
         <header className={css.Searchbar}>
@@ -18,7 +18,7 @@ const Searchbar = function Searchbar({
                     autoComplete="off"
                     autoFocus
                     placeholder="Search images and photos"
-                    value={inputValue}
+                    value={query}
                 />
                 <button type="submit" className={css.SearchFormButton}>
                     <span className={css.SearchFormButtonLabel}>Search</span>
@@ -31,6 +31,6 @@ const Searchbar = function Searchbar({
 Searchbar.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    inputValue: PropTypes.string.isRequired,
+    query: PropTypes.string.isRequired,
 };
 export default Searchbar;
