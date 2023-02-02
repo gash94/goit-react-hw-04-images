@@ -3,11 +3,7 @@ import PropTypes from "prop-types";
 
 import css from "./Searchbar.module.css";
 
-const Searchbar = function Searchbar({
-    handleSubmit,
-    handleInputChange,
-    query,
-}) {
+const Searchbar = ({ handleSubmit, handleInputChange, query }) => {
     return (
         <header className={css.Searchbar}>
             <form className={css.SearchForm} onSubmit={handleSubmit}>
